@@ -12,8 +12,8 @@ import Images from './components/Images'
 import Stars from './components/Stars'
 import Text from './components/Text'
 import Ocean from './components/Ocean'
+import VoxelVader from './components/VoxelVader'
 
-/** This component maintains the scene */
 function Scene({ top, mouse }) {
   const { size } = useThree()
   const scrollMax = size.height * 4.5
@@ -26,6 +26,7 @@ function Scene({ top, mouse }) {
       <Text opacity={top.interpolate([0, 200], [1, 0])} position={top.interpolate(top => [0, -1 + top / 200, 0])}>
         lorem
       </Text>
+      <VoxelVader position={top.interpolate(top => [0, -10 + ((top * 15) / scrollMax) * 2, 0])} />
       <Ocean position={top.interpolate(top => [0, -10 + ((top * 15) / scrollMax) * 2, 0])}  />
       <Text position={top.interpolate(top => [0, -20 + ((top * 10) / scrollMax) * 2, 0])} color="black" fontSize={150}>
         Ipsum
