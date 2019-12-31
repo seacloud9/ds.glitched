@@ -65,6 +65,7 @@ function Ocean({
     flatShading: true,
     name: 'ocean',
   }
+
   return (
     <a.group ref={groupRef} position={[0, 0, 0]}>
       <mesh ref={meshRef}  

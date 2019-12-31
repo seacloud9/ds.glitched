@@ -19,7 +19,7 @@ function Scene({ top, mouse }) {
   const scrollMax = size.height * 4.5
   return (
     <>
-      <a.spotLight intensity={1.2} color="white" position={mouse.interpolate((x, y) => [x / 100, -y / 100, 6.5])} />
+      <a.spotLight intensity={0.4} color="white" position={mouse.interpolate((x, y) => [x / 100, -y / 100, 6.5])} />
       <Effects factor={top.interpolate([0, 150], [1, 0])} />
       <Stars position={top.interpolate(top => [0, -1 + top / 20, 0])} />
       <Images top={top} mouse={mouse} scrollMax={scrollMax} offset={10000} />

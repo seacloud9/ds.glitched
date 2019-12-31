@@ -15,7 +15,7 @@ var RenderPass = function(scene, camera, overrideMaterial, clearColor, clearAlph
   this.clearAlpha = clearAlpha !== undefined ? clearAlpha : 0
 
   this.clear = true
-  this.clearDepth = false
+  this.clearDepth = true
   this.needsSwap = false
 }
 

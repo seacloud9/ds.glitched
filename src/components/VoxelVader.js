@@ -38,7 +38,7 @@ const generateVoxel = ({colorPool, color, ambientColor, size, steps, padding, ma
              return obj.vaderObj;
          }
  
-         let vd = VaderMesh();
+         let voxelInvader = VaderMesh();
          /// merging geometry
          let visibileArrBG = [];
          let visibileArr = [];
@@ -53,7 +53,7 @@ const generateVoxel = ({colorPool, color, ambientColor, size, steps, padding, ma
                  }
              }
          }
-         meshInvaderVisibile(vd);
+         meshInvaderVisibile(voxelInvader);
          var mergedGeo = new THREE.Geometry();
          var mergedGeoBG = new THREE.Geometry();
          for (let i = 0; visibileArr.length > i; i++) {
@@ -79,7 +79,7 @@ const generateVoxel = ({colorPool, color, ambientColor, size, steps, padding, ma
                  },
                  viewVector: {
                      type: "v3",
-                     value: camera
+                     value: camera.position
                  }
              },
              vertexShader: `
@@ -126,20 +126,20 @@ const generateVoxel = ({colorPool, color, ambientColor, size, steps, padding, ma
                  if (obj.children !== undefined && obj.children[i].children.length === 0 && obj.children[i].visible === true) {
                      obj.children[i].visible = false;
                      obj.children[i].vaderT = "hidden";
-                     removeNonMerged(vd);
+                     removeNonMerged(voxelInvader);
                  } else if (obj.children !== undefined) {
                      removeNonMerged(obj.children[i]);
                  }
              }
          }
-         removeNonMerged(vd);
+         removeNonMerged(voxelInvader);
          for (let i = 0; i < groups.length; i++) {
-             vd.add(groups[i]);
+            voxelInvader.add(groups[i]);
          }
-         vd.lookAt(camera);
-         voxelVaderMesh = vd
+         voxelInvader.lookAt(camera);
+         voxelVaderMesh = voxelInvader
          window.scene = scene
-         return vd
+         return voxelInvader
 }
 
 function VoxelVader({
