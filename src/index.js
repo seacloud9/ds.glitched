@@ -7,9 +7,10 @@ import configureStore, { history } from './configureStore'
 // A THREE.js React renderer, see: https://github.com/drcmda/react-three-fiber
 import { Canvas, useThree } from 'react-three-fiber'
 // A React animation lib, see: https://github.com/react-spring/react-spring
-import { useSpring, a } from 'react-spring/three'
+import { useSpring, a, animated } from 'react-spring/three'
 import './styles.css'
 import Background from './components/Background'
+import ShaderBackground from './components/ShaderBackground'
 import Effects from './components/Effects'
 import Images from './components/Images'
 import Stars from './components/Stars'
@@ -21,6 +22,13 @@ const store = configureStore()
 function Intro({ top, mouse }) {
   const { size } = useThree()
   const scrollMax = size.height * 4.5
+  const { pos } = useSpring({
+    to: async (next, cancel) => {
+      await next({pos: [0,0,2]})
+    },
+    from: {pos: [0,0,-10]}
+  })
+
   return (
     <>
       <a.spotLight intensity={0.4} color="white" position={mouse.interpolate((x, y) => [x / 100, -y / 100, 6.5])} />
@@ -30,17 +38,16 @@ function Intro({ top, mouse }) {
       <Text opacity={top.interpolate([0, 200], [1, 0])} position={top.interpolate(top => [0, -1 + top / 200, 0])}>
         lorem
       </Text>
-      <VoxelVader position={top.interpolate(top => [0, -10 + ((top * 15) / scrollMax) * 2, 0])} />
+      <animated.group position={pos}>
+      <group>
+        <VoxelVader />
+      </group>
+      </animated.group>
       <Ocean position={top.interpolate(top => [0, -10 + ((top * 15) / scrollMax) * 2, 0])} />
       <Text position={top.interpolate(top => [0, -20 + ((top * 10) / scrollMax) * 2, 0])} color="black" fontSize={150}>
         Ipsum
       </Text>
-      <Background
-        color={top.interpolate(
-          [0, scrollMax * 0.1, scrollMax * 0.2, scrollMax * 0.3, scrollMax * 0.4, scrollMax * 0.5, scrollMax],
-          ['#003287', '#003D9E', '#004AB3', '#0057C7', '#0063D7', '#006DE4', '#1C83ED']
-        )}
-      />
+      <ShaderBackground />
     </>
   )
 }

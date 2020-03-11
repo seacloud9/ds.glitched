@@ -1,9 +1,9 @@
 import React, { useRef } from 'react'
 import { useRender, useFrame, useThree } from 'react-three-fiber'
 import * as THREE from 'three/src/Three'
-import { a } from 'react-spring/three'
 let voxelVaderMesh
-const generateVoxel = ({colorPool, color, ambientColor, size, steps, padding, materials, camera, scene, groups}) => {
+const colorPool = [0x800830, 0x7F0863, 660000, 0x5B001A, 0x65087F, 0xff0084, 0x00F1F9];
+export const generateVoxel = ({colorPool, color, ambientColor, size, steps, padding, materials, camera, scene, groups}) => {
         const createVaderMesh = (material) =>  {
              return new THREE.Mesh(
                  new THREE.CubeGeometry(1, 1, 1),
@@ -171,7 +171,6 @@ function VoxelVader({
         camera,                       // Default camera
       } = useThree()
   let groups = [];
-  let groupRef = useRef()
   let meshRef = useRef()
   useRender(() => {
 
@@ -190,16 +189,70 @@ function VoxelVader({
   })
   const voxelMesh = generateVoxel({colorPool, color, ambientColor, size, steps, padding, materials, camera, scene, groups}) 
   return (
-    <a.group ref={groupRef} position={[0, 0, 0]} name='VoxelGroup' scale={[0.25,0.25,0.25]}>
-      <primitive object={voxelMesh}  
+      <primitive 
+      object={voxelMesh}  
       name={'VoxelVader'}
       ref={meshRef}
-      position={[0, -4, 0]}
+      position={[0, 0, 0]}
       rotation={[0,0,0]}
+      scale={[0.25,0.25,0.25]}
       />
-    }
-    </a.group>
   )
 }
+
+const _size = 5;
+const _colorPool = [0x800830, 0x7F0863, 660000, 0x5B001A, 0x65087F, 0xff0084, 0x00F1F9];
+const _color = [new THREE.Color(_colorPool[Math.floor(Math.random() * _colorPool.length)]), new THREE.Color(_colorPool[Math.floor(Math.random() * _colorPool.length)])]
+const defaults = {
+    colorPool: _colorPool,
+    color: _color,
+    ambientColor: [0x800830, 0x800830],
+    size: _size,
+    steps: (_size / 5),
+    padding: (parseInt(_size / 2)),
+    materials: [
+        new THREE.MeshLambertMaterial({
+            color: _color[0],
+            ambient: _color[0],
+            specular: 0xffff00,
+            emissive: 0x111111,
+            shininess: 100
+        }),
+        new THREE.MeshLambertMaterial({
+            ccolor: _color[1],
+            ambient: _color[1],
+            specular: 0xffff00,
+            emissive: 0x111111,
+            shininess: 100
+        }),
+    ]
+}
+
+export const VoxelVaderMesh =  (props = defaults) => {
+    const {colorPool, color, ambientColor, size, steps, padding, materials} = props
+    const {
+        scene,                        // Default scene
+        camera,                       // Default camera
+      } = useThree()
+  let groups = [];
+  let meshRef = useRef()
+  useRender(() => {
+
+  })
+
+  useFrame((state, dt) => {
+    if (groups.length) {
+        for (let i = 0; i < groups.length; i++) {
+            if (groups[i].isGlowing) {
+                groups[i].material.uniforms.viewVector.value =
+                    new THREE.Vector3().subVectors(camera.position, voxelVaderMesh.position);
+            }
+        }
+    }
+    return
+  })
+  return generateVoxel({colorPool, color, ambientColor, size, steps, padding, materials, camera, scene, groups}) 
+}
+
 
 export default VoxelVader
