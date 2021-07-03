@@ -1,13 +1,14 @@
 {
-  "main.css": "/static/css/main.8059bdc2.chunk.css",
-  "main.js": "/static/js/main.b0c64a56.chunk.js",
-  "main.js.map": "/static/js/main.b0c64a56.chunk.js.map",
+  "main.css": "/static/css/main.bacc3d77.chunk.css",
+  "main.js": "/static/js/main.a4ffdae7.chunk.js",
+  "main.js.map": "/static/js/main.a4ffdae7.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.42ac5946.js",
   "runtime~main.js.map": "/static/js/runtime~main.42ac5946.js.map",
-  "static/js/2.3796c9cf.chunk.js": "/static/js/2.3796c9cf.chunk.js",
-  "static/js/2.3796c9cf.chunk.js.map": "/static/js/2.3796c9cf.chunk.js.map",
+  "static/js/2.179de9f3.chunk.js": "/static/js/2.179de9f3.chunk.js",
+  "static/js/2.179de9f3.chunk.js.map": "/static/js/2.179de9f3.chunk.js.map",
   "index.html": "/index.html",
-  "precache-manifest.e8461bf46b418ae1d4e305ef58ca73ad.js": "/precache-manifest.e8461bf46b418ae1d4e305ef58ca73ad.js",
+  "precache-manifest.af87f6084ceb3ff493a7733eba623558.js": "/precache-manifest.af87f6084ceb3ff493a7733eba623558.js",
   "service-worker.js": "/service-worker.js",
-  "static/css/main.8059bdc2.chunk.css.map": "/static/css/main.8059bdc2.chunk.css.map"
+  "static/css/main.bacc3d77.chunk.css.map": "/static/css/main.bacc3d77.chunk.css.map",
+  "static/media/Text.css": "/static/media/Road_Rage.16501323.otf"
 }
