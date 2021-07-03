@@ -77,7 +77,7 @@ function Swarm({ count, mouse }) {
     return vaders
   }
   const vaders = developVaders(count)
-  console.log('VoxelVaderMesh', VoxelVaderMesh())
+  //console.log('VoxelVaderMesh', VoxelVaderMesh())
   return (
     
     <>
@@ -89,7 +89,6 @@ function Swarm({ count, mouse }) {
       </pointLight>
       <instancedMesh ref={mesh} args={[null, null, count]}>
         <VoxelVader />
-        <meshStandardMaterial attach="material" color="#700020" />
       </instancedMesh>
     </>
   )

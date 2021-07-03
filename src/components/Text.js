@@ -12,10 +12,16 @@ function Text({ children, position, opacity, color = 'white', fontSize = 410 }) 
     const canvas = document.createElement('canvas')
     canvas.width = canvas.height = 2048
     const context = canvas.getContext('2d')
-    context.font = `bold ${fontSize}px -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif`
+    context.font = `${fontSize}px "ROAD RAGE"`
     context.textAlign = 'center'
     context.textBaseline = 'middle'
-    context.fillStyle = color
+    var grd = context.createLinearGradient(0,0,0,canvas.width);
+    grd.addColorStop(0,"#f7ce46");
+    grd.addColorStop(0.3,"#f4b63f");
+    grd.addColorStop(0.6,"#eb493c");
+    grd.addColorStop(0.1,"#ea334a");
+    
+    context.fillStyle = grd;
     context.fillText(children, 1024, 1024 - 410 / 2)
     return canvas
   }, [children, width, height, color, fontSize])
