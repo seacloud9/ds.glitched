@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { Provider } from 'react-redux'
 import { Route, Switch } from 'react-router' // react-router v4/v5
 import { ConnectedRouter } from 'connected-react-router'
@@ -17,29 +17,46 @@ const store = configureStore()
 
 function Demo({ top, mouse }) {
   const ref = useRef()
-  const [{ pos }, set, start] = useSpring(() => ({
-    to:{pos: [0,0,5]},
-    from: {pos: [0,0,-20]},
-    config: config.molasses,
-    loop:true
-  }))
+  const [renders, setRenders] = useState(0)
+  const AnimatedGroup = () => {
+    const [{ position }, api] = useSpring((i, controller) => {
+      if (ref) {
+        console.log('ref.current', ref)
+      }
+      return {
+        onRest: (e) => {
+          e = [0, 0, -20]
+          ref.current.position.set(e[0], e[1], e[2])
+          let inc = renders
+          console.log('reset e', e, ref, ref.current.position, api)
+          setRenders(++inc)
+        },
+        position: [0, 0, -20],
+        loop: true,
+        to: { position: [0, 0, 5] },
+        from: { position: [0, 0, -20] },
+        config: config.molasses
+      }
+    })
+    return (
+      <>
+      <Text>D3M0SC3NE</Text>
+      <animated.group ref={ref} position={position}>
+        <VoxelVader position={[2.5, 0, 0]} />
+        <VoxelVader position={[-0.5, 0, 0]} />
+        <VoxelVader position={[-2.5, 0, 0]} />
+      </animated.group>
+      </>
+    )
+  }
   return (
     <>
       <Effects factor={0.4} />
-      <Text>
-        D3M0SC3NE
-      </Text>
-      <animated.group ref={ref} position={pos}>
-        <VoxelVader position={[2.5,0,0]} />
-        <VoxelVader position={[-0.5,0,0]} />
-        <VoxelVader position={[-2.5,0,0]} />
-      </animated.group>
+      <AnimatedGroup />
       <ShaderBackground />
     </>
   )
 }
-
-
 
 /** Main component */
 export default function Main() {
@@ -51,15 +68,14 @@ export default function Main() {
             {/* place ConnectedRouter under Provider */}
             <>
               <Switch>
-                <Route exact path="/" render={() => <Demo  />} />
+                <Route exact path="/" render={() => <Demo />} />
                 <Route render={() => <div>Miss</div>} />
               </Switch>
             </>
           </ConnectedRouter>
         </Provider>
       </Canvas>
-      <div className="scroll-container" >
-      </div>
+      <div className="scroll-container"></div>
     </>
   )
 }

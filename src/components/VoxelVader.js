@@ -111,15 +111,15 @@ export const generateVoxel = ({colorPool, color, ambientColor, size, steps, padd
              opacity: 0.3,
              transparent: true
          });
-         groups.push(new THREE.Mesh(mergedGeoBG, materials[0]));
+         groups.push(new THREE.Mesh(mergedGeoBG, materials[1]));
          groups[(groups.length - 1)].isGlowing = false;
          groups.push(new THREE.Mesh(mergedGeoBG, glowMaterial.clone()));
          groups[(groups.length - 1)].scale.multiplyScalar(1.1);
-         groups[(groups.length - 1)].isGlowing = true;
+         groups[(groups.length - 1)].isGlowing = false;
      
          groups.push(new THREE.Mesh(mergedGeo, glowMaterial.clone()));
          groups[(groups.length - 1)].scale.multiplyScalar(1.1);
-         groups[(groups.length - 1)].isGlowing = true;
+         groups[(groups.length - 1)].isGlowing = false;
          groups.push(new THREE.Mesh(mergedGeo, materials[1]));
          groups[(groups.length - 1)].isGlowing = false;
          const removeNonMerged = (obj) => {
@@ -169,7 +169,6 @@ function VoxelVader({
       } = useThree()
   let groups = [];
   let meshRef = useRef()
-
   useFrame((state, dt) => {
     if (groups.length) {
         for (let i = 0; i < groups.length; i++) {
@@ -181,8 +180,7 @@ function VoxelVader({
     }
     return
   })
-  const voxelMesh = generateVoxel({colorPool, color, ambientColor, size, steps, padding, materials, camera, scene, groups}) 
-
+  const voxelMesh = generateVoxel({colorPool, color, ambientColor, size, steps, padding, materials, camera, scene, groups});
   return (
       <primitive 
       object={voxelMesh}  
