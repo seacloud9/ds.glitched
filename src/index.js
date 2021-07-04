@@ -20,15 +20,11 @@ function Demo({ top, mouse }) {
   const [renders, setRenders] = useState(0)
   const AnimatedGroup = () => {
     const [{ position }, api] = useSpring((i, controller) => {
-      if (ref) {
-        console.log('ref.current', ref)
-      }
       return {
         onRest: (e) => {
           e = [0, 0, -20]
           ref.current.position.set(e[0], e[1], e[2])
           let inc = renders
-          console.log('reset e', e, ref, ref.current.position, api)
           setRenders(++inc)
         },
         position: [0, 0, -20],
