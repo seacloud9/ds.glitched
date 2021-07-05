@@ -64,7 +64,8 @@ export const generateVoxel = ({colorPool, color, ambientColor, size, steps, padd
             mergedGeoBG.mergeMesh(visibileArrBG[i]);
          }
  
-         let glowMaterial = new THREE.ShaderMaterial({
+
+         let glowMaterialGen = (_color) =>  new THREE.ShaderMaterial({
              uniforms: {
                  "c": {
                      type: "f",
@@ -76,7 +77,7 @@ export const generateVoxel = ({colorPool, color, ambientColor, size, steps, padd
                  },
                  glowColor: {
                      type: "c",
-                     value: new THREE.Color(0xffff00)
+                     value: new THREE.Color(_color)
                  },
                  viewVector: {
                      type: "v3",
@@ -111,16 +112,18 @@ export const generateVoxel = ({colorPool, color, ambientColor, size, steps, padd
              opacity: 0.3,
              transparent: true
          });
-         groups.push(new THREE.Mesh(mergedGeoBG, materials[1]));
+
+     
+         groups.push(new THREE.Mesh(mergedGeoBG, glowMaterialGen(color[1])));
          groups[(groups.length - 1)].isGlowing = false;
-         groups.push(new THREE.Mesh(mergedGeoBG, glowMaterial.clone()));
+         groups.push(new THREE.Mesh(mergedGeoBG, glowMaterialGen(color[0]) ));
          groups[(groups.length - 1)].scale.multiplyScalar(1.1);
          groups[(groups.length - 1)].isGlowing = false;
      
-         groups.push(new THREE.Mesh(mergedGeo, glowMaterial.clone()));
+         groups.push(new THREE.Mesh(mergedGeo,glowMaterialGen(color[1]) ));
          groups[(groups.length - 1)].scale.multiplyScalar(1.1);
          groups[(groups.length - 1)].isGlowing = false;
-         groups.push(new THREE.Mesh(mergedGeo, materials[1]));
+         groups.push(new THREE.Mesh(mergedGeo,glowMaterialGen(color[1])));
          groups[(groups.length - 1)].isGlowing = false;
          const removeNonMerged = (obj) => {
              for (let i = 0; obj.children.length > i; i++) {
@@ -143,7 +146,7 @@ export const generateVoxel = ({colorPool, color, ambientColor, size, steps, padd
 }
 
 function VoxelVader({
-    colorPool = [0x800830, 0x7F0863, 660000, 0x5B001A, 0x65087F, 0xff0084, 0x00F1F9],
+    colorPool = [0x800830, 0x7F0863, 0x660000, 0x5B001A, 0x65087F, 0xff0084, 0x00F1F9],
     color  = [new THREE.Color(colorPool[Math.floor(Math.random() * colorPool.length)]), new THREE.Color(colorPool[Math.floor(Math.random() * colorPool.length)])],
     ambientColor  = [0x800830, 0x800830],
     size = 5,
@@ -152,13 +155,13 @@ function VoxelVader({
     materials =  [
         new THREE.MeshPhongMaterial({
             color: color[0],
-            specular: 0xffff00,
-            emissive: 0x111111,
+            //specular: 0xffff00,
+            //emissive: 0x111111,
         }),
         new THREE.MeshLambertMaterial({
             color: color[1],
-            emissive: 0x111111,
-            reflectivity: 1.5
+            //emissive: 0x111111,
+            //reflectivity: 1.5
         }),
     ],
     position = [0, 0, 0],

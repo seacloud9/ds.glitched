@@ -19,11 +19,9 @@ function Demo({ top, mouse }) {
   const ref = useRef()
   const [renders, setRenders] = useState(0)
   const AnimatedGroup = () => {
-    const [{ position }, api] = useSpring((i, controller) => {
+    const [{ position }] = useSpring((i, controller) => {
       return {
         onRest: (e) => {
-          e = [0, 0, -20]
-          ref.current.position.set(e[0], e[1], e[2])
           let inc = renders
           setRenders(++inc)
         },
@@ -48,6 +46,8 @@ function Demo({ top, mouse }) {
   return (
     <>
       <Effects factor={0.4} />
+      <ambientLight intensity={0.5} />
+      <spotLight intensity={0.6} position={[30, 30, 50]} angle={0.2} penumbra={1}  />
       <AnimatedGroup />
       <ShaderBackground />
     </>
