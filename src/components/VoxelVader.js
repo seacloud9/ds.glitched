@@ -6,8 +6,7 @@ let voxelVaderMesh
 export const generateVoxel = ({colorPool, color, ambientColor, size, steps, padding, materials, camera, scene, groups}) => {
         const createVaderMesh = (material) =>  {
              return new THREE.Mesh(
-                 new THREE.CubeGeometry(1, 1, 1),
-                 material
+                 new THREE.CubeGeometry(1, 1, 1)
              );
          }
  
@@ -27,7 +26,7 @@ export const generateVoxel = ({colorPool, color, ambientColor, size, steps, padd
              }
              for (let j = 0; j < size; j += steps) {
                  for (let i = 0; i < size; i += steps) {
-                     let vadersBG = createVaderMesh(materials[1]);
+                     let vadersBG = createVaderMesh();
                         vadersBG.position.set(i, j, 4);
                         vadersBG.visible = col[j][i];
                         vadersBG.vaderT = "bg";
@@ -69,11 +68,11 @@ export const generateVoxel = ({colorPool, color, ambientColor, size, steps, padd
              uniforms: {
                  "c": {
                      type: "f",
-                     value: 0
+                     value: 1.0
                  },
                  "p": {
                      type: "f",
-                     value: 5.3
+                     value: 0.6
                  },
                  glowColor: {
                      type: "c",
@@ -103,28 +102,21 @@ export const generateVoxel = ({colorPool, color, ambientColor, size, steps, padd
              varying float intensity;
              void main() 
              {
-                 vec3 glow = glowColor * intensity;
+                 vec3 glow = glowColor * intensity ;
                  gl_FragColor = vec4( glow, 1.0 );
              }
              `,
              side: THREE.DoubleSide,
              blending: THREE.AdditiveBlending,
-             opacity: 0.3,
              transparent: true
          });
-
-     
-         groups.push(new THREE.Mesh(mergedGeoBG, glowMaterialGen(color[1])));
-         groups[(groups.length - 1)].isGlowing = false;
-         groups.push(new THREE.Mesh(mergedGeoBG, glowMaterialGen(color[0]) ));
+         groups.push(new THREE.Mesh(mergedGeoBG, glowMaterialGen(color[0])));
+         groups.push(new THREE.Mesh(mergedGeoBG, glowMaterialGen(color[0])));
          groups[(groups.length - 1)].scale.multiplyScalar(1.1);
-         groups[(groups.length - 1)].isGlowing = false;
-     
          groups.push(new THREE.Mesh(mergedGeo,glowMaterialGen(color[1]) ));
          groups[(groups.length - 1)].scale.multiplyScalar(1.1);
-         groups[(groups.length - 1)].isGlowing = false;
          groups.push(new THREE.Mesh(mergedGeo,glowMaterialGen(color[1])));
-         groups[(groups.length - 1)].isGlowing = false;
+ 
          const removeNonMerged = (obj) => {
              for (let i = 0; obj.children.length > i; i++) {
                  if (obj.children !== undefined && obj.children[i].children.length === 0 && obj.children[i].visible === true) {
@@ -146,7 +138,7 @@ export const generateVoxel = ({colorPool, color, ambientColor, size, steps, padd
 }
 
 function VoxelVader({
-    colorPool = [0x800830, 0x7F0863, 0x660000, 0x5B001A, 0x65087F, 0xff0084, 0x00F1F9],
+    colorPool = [0xff004b, 0x0000ff, 0x00ff3c, 0x6900ff, 0xff0000, 0x00b3ff, 0x1e00ff],
     color  = [new THREE.Color(colorPool[Math.floor(Math.random() * colorPool.length)]), new THREE.Color(colorPool[Math.floor(Math.random() * colorPool.length)])],
     ambientColor  = [0x800830, 0x800830],
     size = 5,
@@ -155,13 +147,13 @@ function VoxelVader({
     materials =  [
         new THREE.MeshPhongMaterial({
             color: color[0],
-            //specular: 0xffff00,
+            specular: 0xffff00,
             //emissive: 0x111111,
         }),
         new THREE.MeshLambertMaterial({
             color: color[1],
-            //emissive: 0x111111,
-            //reflectivity: 1.5
+            emissive: 0xffff00,
+            reflectivity: 1.5
         }),
     ],
     position = [0, 0, 0],
@@ -172,6 +164,7 @@ function VoxelVader({
       } = useThree()
   let groups = [];
   let meshRef = useRef()
+  
   useFrame((state, dt) => {
     if (groups.length) {
         for (let i = 0; i < groups.length; i++) {
